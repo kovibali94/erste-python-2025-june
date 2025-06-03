@@ -33,3 +33,7 @@ print(rpg_games_flat)
 
 int_tuple = (1,)
 print(type(int_tuple))
+
+basket = {"VGA": 1000, "CPU": 500, "RAM": 200, "SSD": 300}
+basket_total = {k: v * 1.27 for k, v in basket.items()}
+print(basket_total)
