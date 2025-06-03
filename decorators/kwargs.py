@@ -1,0 +1,17 @@
+def kwargs(**kwargv):
+    print(kwargv)
+    return kwargv
+
+
+result = kwargs(language="Python", version=3.13, author="John Doe")
+print(type(result))
+
+
+def generate_filter_query(**kwargv):
+    query = "SELECT * FROM products WHERE "
+    for k, v in kwargv.items():
+        query += f"{k}='{v}' AND "
+    return query[:-5]
+
+
+print(generate_filter_query(category="electronics", brand="BrandX", color="black"))
