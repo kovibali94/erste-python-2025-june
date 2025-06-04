@@ -1,8 +1,8 @@
 import math
 
 
-def log_args(*argv):
-    return argv
+def log_args(*args):
+    return args
 
 
 result = log_args(1, 2, 3, "a", "b", "c")

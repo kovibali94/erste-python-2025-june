@@ -1,10 +1,10 @@
 # item = {"name": "apple", "price": 1.5, "quantity": 3}
-def calculate_total_price(*items, **kwargv):
+def calculate_total_price(*items, **percents):
     total = sum(item["price"] * item["quantity"] for item in items)
-    if "discount" in kwargv:
-        total *= (100 - kwargv["discount"]) / 100
-    if "vat" in kwargv:
-        total *= (100 + kwargv["vat"]) / 100
+    if "discount" in percents:
+        total *= (100 - percents["discount"]) / 100
+    if "vat" in percents:
+        total *= (100 + percents["vat"]) / 100
     return total
 
 
@@ -17,6 +17,7 @@ total = calculate_total_price(
 )
 
 print(total)
+
 
 # Better real life example
 # def total(basket, vat_percent=27, discount_percent=0):
