@@ -38,6 +38,8 @@ def init(conn):
     insert_user = """INSERT INTO user (username, email, password) VALUES ('john', 'john@mail.com', 'hashed_password');"""
 
     run_query(conn, insert_user)
+    
+    connection.commit()
 
 
 if __name__ == "__main__":
