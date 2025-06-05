@@ -1,5 +1,3 @@
-version: '1.0'
-
 services:
   mariadb:
     image: mariadb
@@ -11,5 +9,3 @@ services:
       MYSQL_PASSWORD: erste
       MYSQL_ROOT_PASSWORD: erste
       MYSQL_DATABASE: erste
-    env_file:
-      - .env

@@ -1,4 +1,5 @@
 import mysql.connector
+# pip install mysql-connector-python
 
 
 def connect(host, user, password, database):
@@ -12,7 +13,7 @@ def connect(host, user, password, database):
         return None
 
 
-def query(conn, query):
+def run_query(conn, query):
     cursor = conn.cursor(dictionary=True)
     try:
         cursor.execute(query)
@@ -32,12 +33,20 @@ def init(conn):
         password VARCHAR(255) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );"""
-    query(conn, create_table)
+    run_query(conn, create_table)
 
     insert_user = """INSERT INTO user (username, email, password) VALUES ('john', 'john@mail.com', 'hashed_password');"""
 
-    query(conn, insert_user)
+    run_query(conn, insert_user)
 
 
 if __name__ == "__main__":
-    connection = connect(host="erste", user="erste", password="erste", database="erste")
+    connection = connect(
+        host="localhost", user="erste", password="erste", database="erste"
+    )
+    # init(connection)
+    query = "SELECT * FROM user;"
+    results = run_query(connection, query)
+    if results:
+        for row in results:
+            print(row)
