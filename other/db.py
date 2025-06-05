@@ -22,3 +22,15 @@ def query(conn, query):
         return None
     finally:
         cursor.close()
+
+
+if __name__ == "__main__":
+    create_table = """CREATE TABLE user (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(50) NOT NULL UNIQUE,
+        email VARCHAR(100) NOT NULL UNIQUE,
+        password VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );"""
+
+    insert_user = """INSERT INTO user (username, email, password) VALUES ('john', 'john@mail.com', 'hashed_password');"""
