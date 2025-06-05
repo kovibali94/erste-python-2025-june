@@ -1,42 +1,40 @@
 from time import sleep, perf_counter
+from multiprocessing import Process, Queue
 import multiprocessing
 
 
-results = []
-
-
-def proc(sec):
+def proc(sec, queue):
     sleep(sec)
-    return f"Process completed after {sec} seconds"
-
-
-def succeess_callback(proc_result):
-    global results
-    results = proc_result
-
-
-def error_callback(proc_result):
-    try:
-        print(f"Error occurred: {proc_result}")
-    except Exception as e:
-        print(f"Exception in error callback: {e}")
+    queue.put(f"Process completed after {sec} seconds")
 
 
 def main():
-    pool = multiprocessing.Pool(processes=10)
-    args = [i for i in range(1, 11)]
-    # pool.map_async(proc, args, callback=succeess_callback)
-    # pool.close()
-    # én mondom, hogy várjuk meg míg a processzek lefutnak
-    # pool.join()
-    # print(results)
-    res = pool.map_async(
-        proc, args, callback=succeess_callback, error_callback=error_callback
-    )
-    print(res.get(timeout=5))  # Get results with a timeout
+    processes = []
+
+    for i in range(1, 11):
+        q = Queue()
+        p = Process(target=proc, args=(i, q))
+        p.start()
+        processes.append((p, q, i))
+
+    deadline = perf_counter() + 5 
+
+    for p, q, i in processes:
+        remaining = deadline - perf_counter()
+        if remaining > 0:
+            p.join(timeout=remaining)
+        if p.is_alive():
+            p.terminate()
+            p.join()
+            print(f"Process {i} terminated (took longer than 5 seconds)")
+        else:
+            if not q.empty():
+                result = q.get()
+                print(result)
 
 
 if __name__ == "__main__":
+    multiprocessing.set_start_method("spawn")
     start = perf_counter()
     main()
     stop = perf_counter()
